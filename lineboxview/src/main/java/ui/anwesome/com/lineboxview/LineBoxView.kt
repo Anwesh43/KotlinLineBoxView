@@ -7,6 +7,7 @@ import android.view.View
 import android.graphics.Paint
 import android.graphics.Canvas
 import android.graphics.Color
+import android.view.ViewGroup
 
 /**
  * Created by anweshmishra on 26/03/18.
@@ -18,6 +19,7 @@ class LineBoxView(ctx : Context) : View(ctx) {
         renderer.render(canvas, paint)
     }
     fun updateFromOtherThread(stopcb : () -> Unit) {
+        renderer.update(stopcb)
         postInvalidate()
     }
     override fun onTouchEvent(event : MotionEvent) : Boolean {
@@ -38,6 +40,7 @@ class LineBoxView(ctx : Context) : View(ctx) {
                 if (j == scales.size || j == -1) {
                     j -= dir
                     dir = 0
+                    prevScale = scales[j]
                     stopcb(prevScale)
                 }
             }
@@ -84,8 +87,11 @@ class LineBoxView(ctx : Context) : View(ctx) {
         fun render(canvas : Canvas, paint : Paint) {
             canvas.drawColor(Color.parseColor("#212121"))
             paint.color = Color.WHITE
+            lineBox.draw(canvas, paint)
+        }
+        fun update(stopcb : () -> Unit) {
             lineBox.update {
-
+                stopcb()
             }
         }
         fun handleTap() {
@@ -95,9 +101,9 @@ class LineBoxView(ctx : Context) : View(ctx) {
         }
     }
     companion object {
-        fun create(activity : Activity) : LineBoxView {
+        fun create(activity : Activity, w : Int, h : Int) : LineBoxView {
             val view : LineBoxView = LineBoxView(activity)
-            activity.setContentView(view)
+            activity.addContentView(view, ViewGroup.LayoutParams(w, h))
             return view
         }
         fun pause() {
