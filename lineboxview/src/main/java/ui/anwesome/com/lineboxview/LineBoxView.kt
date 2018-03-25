@@ -11,9 +11,10 @@ import android.graphics.Color
  * Created by anweshmishra on 26/03/18.
  */
 class LineBoxView(ctx : Context) : View(ctx) {
-    val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+    val paint : Paint = Paint(Paint.ANTI_ALIAS_FLAG)
+    val renderer : Renderer = Renderer(this)
     override fun onDraw(canvas : Canvas) {
-
+        renderer.render(canvas, paint)
     }
     fun updateFromOtherThread(stopcb : () -> Unit) {
         postInvalidate()
@@ -21,7 +22,7 @@ class LineBoxView(ctx : Context) : View(ctx) {
     override fun onTouchEvent(event : MotionEvent) : Boolean {
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
-
+                renderer.handleTap()
             }
         }
         return true
@@ -83,7 +84,7 @@ class LineBoxView(ctx : Context) : View(ctx) {
             canvas.drawColor(Color.parseColor("#212121"))
             paint.color = Color.WHITE
             lineBox.update {
-                
+
             }
         }
         fun handleTap() {
