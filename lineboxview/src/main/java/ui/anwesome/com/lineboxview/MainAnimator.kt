@@ -6,13 +6,13 @@ import java.util.concurrent.ConcurrentLinkedQueue
  * Created by anweshmishra on 26/03/18.
  */
 class MainAnimator {
-    val runner : Runner = Runner(0)
-    var thread : Thread? = null
-    var startcb : () -> Unit = {
+    private val runner : Runner = Runner(0)
+    private var thread : Thread? = null
+    private var startcb : () -> Unit = {
         thread = Thread(runner)
         thread?.start()
     }
-    var stopcb : () -> Unit = {
+    private var stopcb : () -> Unit = {
         while(true) {
             try {
                 thread?.join()

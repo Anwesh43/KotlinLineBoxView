@@ -5,6 +5,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.graphics.Paint
 import android.graphics.Canvas
+import android.graphics.Color
 
 /**
  * Created by anweshmishra on 26/03/18.
@@ -54,6 +55,8 @@ class LineBoxView(ctx : Context) : View(ctx) {
             val BOX_SIZE = 2 * Math.min(w, h)/ 3
             val x = - BOX_SIZE/2
             val gap = (BOX_SIZE/2)
+            paint.strokeWidth = gap * 0.12f
+            paint.strokeCap = Paint.Cap.ROUND
             canvas.save()
             canvas.translate(w/2, h/2)
             for (i in 0..1) {
@@ -72,6 +75,21 @@ class LineBoxView(ctx : Context) : View(ctx) {
         }
         fun startUpdating(startcb : () -> Unit) {
             state.startUpdating(startcb)
+        }
+    }
+    data class Renderer(var view : LineBoxView) {
+        val lineBox : LineBox = LineBox(0)
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(Color.parseColor("#212121"))
+            paint.color = Color.WHITE
+            lineBox.update {
+                
+            }
+        }
+        fun handleTap() {
+            lineBox.startUpdating {
+                MainAnimator.ANIMATOR.addView(view)
+            }
         }
     }
 }
