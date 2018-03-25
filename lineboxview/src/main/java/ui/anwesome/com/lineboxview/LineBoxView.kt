@@ -1,5 +1,6 @@
 package ui.anwesome.com.lineboxview
 
+import android.app.Activity
 import android.content.Context
 import android.view.MotionEvent
 import android.view.View
@@ -11,8 +12,8 @@ import android.graphics.Color
  * Created by anweshmishra on 26/03/18.
  */
 class LineBoxView(ctx : Context) : View(ctx) {
-    val paint : Paint = Paint(Paint.ANTI_ALIAS_FLAG)
-    val renderer : Renderer = Renderer(this)
+    private val paint : Paint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val renderer : Renderer = Renderer(this)
     override fun onDraw(canvas : Canvas) {
         renderer.render(canvas, paint)
     }
@@ -91,6 +92,19 @@ class LineBoxView(ctx : Context) : View(ctx) {
             lineBox.startUpdating {
                 MainAnimator.ANIMATOR.addView(view)
             }
+        }
+    }
+    companion object {
+        fun create(activity : Activity) : LineBoxView {
+            val view : LineBoxView = LineBoxView(activity)
+            activity.setContentView(view)
+            return view
+        }
+        fun pause() {
+            MainAnimator.ANIMATOR.pause()
+        }
+        fun resume() {
+            MainAnimator.ANIMATOR.resume()
         }
     }
 }

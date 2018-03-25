@@ -29,6 +29,9 @@ class MainAnimator {
     fun pause() {
         runner.pause(stopcb)
     }
+    fun resume() {
+        runner.resume(startcb)
+    }
     data class Runner(var i : Int) : Runnable {
         val updatingViews : ConcurrentLinkedQueue<LineBoxView> = ConcurrentLinkedQueue()
         var running : Boolean = false
