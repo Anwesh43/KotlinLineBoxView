@@ -14,6 +14,9 @@ class LineBoxView(ctx : Context) : View(ctx) {
     override fun onDraw(canvas : Canvas) {
 
     }
+    fun updateFromOtherThread(stopcb : () -> Unit) {
+        postInvalidate()
+    }
     override fun onTouchEvent(event : MotionEvent) : Boolean {
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
